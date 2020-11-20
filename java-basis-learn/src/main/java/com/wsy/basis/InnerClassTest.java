@@ -1,6 +1,6 @@
 package com.wsy.basis;
 
-import org.springframework.context.annotation.Configuration;
+import java.util.*;
 
 /**
  * 内部类：可访问其外围对象的所有成员,还拥有外围类的所有元素访问权
@@ -457,5 +457,240 @@ class Callbacks {
         caller1.go();
         caller2.go();
         caller2.go();
+    }
+}
+
+/**
+ * start()能重复使用Event对象(重新启动计数)
+ */
+abstract class Event {
+    private long eventTime;//私有变量保证安全性
+    protected final long delayTime;
+    protected Event(long delayTime) {
+        this.delayTime = delayTime;
+        start();
+    }
+    public void start(){
+        eventTime = System.nanoTime() + delayTime;
+    }
+    public boolean ready(){
+        return System.nanoTime() >= eventTime;
+    }
+    public abstract void action();
+}
+class Controller {
+    private List<Event> eventList =  new ArrayList<Event>();
+    public void addEvent(Event c){eventList.add(c);}
+    public void run(){
+        //在运行的时候,可能会添加进新的对象
+        while (eventList.size()>0){
+//            for(Event e: eventList)
+            for(Event e: new ArrayList<Event>(eventList))
+                if(e.ready()){
+                    System.out.println(e);
+                    e.action();
+                    eventList.remove(e);
+                }
+        }
+    }
+}
+
+class GreenHouseControls extends Controller {
+    //不会继承父类的eventList
+    private boolean light = false;
+    public class LightOn extends Event {
+        public LightOn(long delayTime){super(delayTime);}
+        public void action() {
+            light = true;
+        }
+        public String toString(){return "Light is on";}
+    }
+    public class LightOff extends Event {
+        public LightOff(long delayTime){super(delayTime);}
+        public void action() {
+            light = false;
+        }
+        public String toString(){return "Light is off";}
+    }
+    public class Bell extends Event {
+        protected Bell(long delayTime) {
+            super(delayTime);
+        }
+        public void action() {
+            addEvent(new Bell(delayTime));
+        }
+        public String toString() {
+            return "Bing!";
+        }
+    }
+    public class Restart extends Event {
+        private Event[] eventList;
+        //本身是Event,具有delayTime属性和action属性
+        public Restart(long delayTime,Event[] eventList){
+            super(delayTime);
+            this.eventList = eventList;
+            for(Event e: eventList)
+                addEvent(e);//外部类的addEvent
+        }
+        public void action() {
+            for(Event e: eventList){
+                //将传入的事件重启并加入事件队列
+                e.start();
+                addEvent(e);
+            }
+            //将自己重启
+            start();
+            //将自己加入事件队列
+            addEvent(this);
+        }
+        public String toString(){
+            return "Restarting system";
+        }
+    }
+}
+
+class GreenHouseController {
+    public static void main(String[] args) {
+        GreenHouseControls gc =  new GreenHouseControls();
+        gc.addEvent(gc.new Bell(900));
+        Event[] events = {
+                gc.new LightOn(200),
+                gc.new LightOn(400)
+        };
+        gc.addEvent(gc.new Restart(2000,events));
+        gc.run();
+    }
+}
+
+/**
+ * 内部类的构造器必须连接到指向其外围类对象的引用
+ * 那个指向外围对象的"秘密的"引用必须被初始化,在导出类中不再存在可连接的默认对象
+ * 内部类不能被覆盖
+ */
+class WithInner {
+
+    class Inner{
+        private String name;
+        public Inner(String name){
+           this.name = name;
+        }
+    };
+}
+class InheritInner extends WithInner.Inner {
+    //继承内部类的构造器必须传递父类并初始化
+    InheritInner(WithInner wi,String name){
+        wi.super(name);
+    }
+//    InheritInner(){
+//        enclosingClassReference.super();
+//    }
+    public static void main(String[] args) {
+        WithInner wi = new WithInner();
+        InheritInner ii = new InheritInner(wi,"ni");
+    }
+}
+
+/**
+ * 这两个内部类是完全独立的两个实体,各自在自己的命名空间内
+ */
+class Egg {
+    private Yolk y;
+    protected class Yolk{
+        public Yolk() {
+            System.out.println("Egg.Yolk()");
+        }
+    }
+    public Egg(){
+        System.out.println("New Egg()");
+        y = new Yolk();
+    }
+}
+class BigEgg extends Egg {
+    public class Yolk{
+        public Yolk(){
+            System.out.println("BigEgg.Yolk()");
+        }
+    }
+    public static void main(String[] args) {
+        new BigEgg();
+    }
+}
+
+class Egg2 {
+    protected class Yolk{
+        public Yolk() {
+            System.out.println("Egg2.Yolk()");
+        }
+        public void f(){
+            System.out.println("Egg2.Yolk.f()");
+        }
+    }
+    private Egg2.Yolk y = new Yolk();
+    public Egg2(){
+        System.out.println("New Egg2()");
+    }
+    public void insertYolk(Yolk yy){y=yy;}
+    public void g(){y.f();}
+}
+
+class BigEgg2 extends Egg2{
+    public class Yolk extends Egg2.Yolk{
+        public Yolk() {
+            System.out.println("BigEgg2.Yolk()");
+        }
+        public void f(){
+            System.out.println("BigEgg2.Yolk.f()");
+        }
+    }
+    public BigEgg2(){insertYolk(new Yolk());}
+
+    public static void main(String[] args) {
+        Egg2 e2 = new BigEgg2();
+        e2.g();
+    }
+}
+
+/**
+ * 局部内部类不能有访问说明符,因为它不是外围类的一部分
+ * 但是它可以访问当前代码块内的常量,以及此外围类的所有成员
+ * 局部内部类可以使用已命名的构造器或者需要重载构造器,而匿名类只能用于实例初始化
+ */
+interface Counter{
+    int next();
+}
+class LocalInnerClass {
+  private int count = 0;
+  Counter getCounter(final String name){
+      class LocalCounter implements Counter {
+          public LocalCounter(){
+              System.out.println("LocalCounter");
+          }
+          public int next(){
+              System.out.println(name);
+              return count++;
+          }
+      }
+      return new LocalCounter();
+  }
+  Counter getCounter2(final String name){
+      return new Counter() {
+          {
+              System.out.println("Counter()");
+          }
+          public int next() {
+              System.out.println(name);
+              return count++;
+          }
+      };
+  }
+
+    public static void main(String[] args) {
+        LocalInnerClass lic = new LocalInnerClass();
+        Counter c1 = lic.getCounter("Local inner"),
+                c2 = lic.getCounter2("Anonymous inner");
+        for(int i =0;i<5;i++)
+            System.out.println(c1.next());
+        for(int i =0;i<5;i++)
+            System.out.println(c2.next());
     }
 }
