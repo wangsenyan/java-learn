@@ -17,6 +17,7 @@ import java.util.concurrent.locks.ReentrantLock;
  *
  * 三。可重入锁/递归锁
  *   - 同一线程外层函数获得锁后,内层递归函数任然能获得改锁的代码(自动获得锁)
+ *     线程可进入任何一个它已经拥有的锁所在的代码块
  *   - new ReentrantLock() synchronized
  *   - 避免死锁
  *
