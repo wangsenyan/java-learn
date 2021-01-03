@@ -16,9 +16,16 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  *    3. singletonFactories 存放可以生成Bean的工厂
  *   - 只有单例的bean会通过三级缓存解决循环依赖的问题
  *   - 非单例的bean不会存放在三级缓存
+ *   - 三级缓存中的对象可以填充属性
+ *     依靠Bean的“中间态”这个概念,指已经实例化但还没有初始化的状态(即半成品)
  * 3. 实例化、初始化
  *   - 实例化: 申请内存
  *   - 初始化: 属性填充
+ * 4. 关键方法
+ *   - getSingleton
+ *   - doCreateBean
+ *   - populateBean
+ *   - addSingleton
  *
  */
 public class CircleDemo {
