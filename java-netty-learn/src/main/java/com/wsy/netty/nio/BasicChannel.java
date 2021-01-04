@@ -30,6 +30,9 @@ import java.nio.channels.FileChannel;
  *  - ByteBuffer支持类型化的put和get,应该一致,否则抛出异常 BufferUnderflowException 超过边界
  *  - 将普通Buffer转换为只读Buffer  byteBuffer.asReadOnlyBuffer();
  *  - MappedByteBuffer 让文件直接在内存(堆外内存)中进行修改,同步到文件由NIO实现,操作系统不必重新拷贝
+ * 6. Scattering 与 Gathering
+ *  - Scatter 将数据写入buffer时,可采用buffer数组,依次写入
+ *  - Gather 从buffer读取数据是,可采用buffer数组,依次读取
  */
 public class BasicChannel {
     public static void main(String[] args) throws Exception {
@@ -37,9 +40,9 @@ public class BasicChannel {
         //basicChannel.NIOFileChannel01();
         //basicChannel.NIOFileChannel02();
         //basicChannel.NIOFileChannel03();
-        //basicChannel.NIOFileChannel04();
+        basicChannel.NIOFileChannel04();
         //basicChannel.NIOByteBuffer01();
-        basicChannel.MappedByteBuffer01();
+        //basicChannel.MappedByteBuffer01();
     }
 
     public void NIOFileChannel01() throws Exception {
