@@ -9,6 +9,8 @@ package com.wsy.netty.nio;
  *  - Buffer(缓冲区)
  *  - Selector(选择器)
  * 4. 面向缓冲区,即数据块通信
+ *
+ * 零拷贝
  */
 public class NIOClient {
 }
