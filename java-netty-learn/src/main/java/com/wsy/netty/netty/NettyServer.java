@@ -19,13 +19,15 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
  * jvm:--add-opens java.base/jdk.internal.misc=ALL-UNNAMED
  *     -Dio.netty.tryReflectionSetAccessible=true
  *
+ * pipeline 双向链表
+ * ctx 双向链表
  *
  */
 public class NettyServer {
     public static void main(String[] args) throws InterruptedException {
         //bossGroup 和 workGroup 含有的子线程(NioEventLoop)
         //  默认实际是CPU核数 * 2,可以自己指定
-        //
+        //  workgroup线程满后会重用某一个
         EventLoopGroup bossGroup = new NioEventLoopGroup(1);
         EventLoopGroup workGroup = new NioEventLoopGroup();
         try {
