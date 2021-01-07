@@ -38,6 +38,10 @@
 			<artifactId>netty-all</artifactId>
 			<version>4.1.56.Final</version>
 		</dependency>
+		<dependency>
+			<groupId>io.netty</groupId>
+			<artifactId>netty-transport</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>

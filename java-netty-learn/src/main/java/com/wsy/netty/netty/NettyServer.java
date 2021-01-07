@@ -21,7 +21,7 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
  *
  * pipeline 双向链表
  * ctx 双向链表
- *
+ * NioEventLoop串行化 处理:消息读取->解码->处理->编码->发送
  */
 public class NettyServer {
     public static void main(String[] args) throws InterruptedException {
@@ -37,12 +37,20 @@ public class NettyServer {
                     .channel(NioServerSocketChannel.class)//使用NioServerSocketChannel作为服务器的通道实现
                     .option(ChannelOption.SO_BACKLOG, 128)//设置线程队列等待连接个数
                     .childOption(ChannelOption.SO_KEEPALIVE, true)//设置保存活动连接状态
-                    .childHandler(new ChannelInitializer<SocketChannel>() {//创建一个通道测试对象(匿名)
+                    .childHandler(new ChannelInitializer<SocketChannel>() {
                         @Override
                         protected void initChannel(SocketChannel ch) throws Exception {
-                            ch.pipeline().addLast(new NettyServerHandler());
+                            System.out.println("客户端socketChannel hashcode=" + ch.hashCode());
+                            //可以用一个集合管理socketChannel,在推送消息时,可以将业务加入到各个channel
+                            //对应的NiOEventLoop的taskQueue 或者 scheduleTaskQueue
                         }
                     });
+//                    .childHandler(new ChannelInitializer<SocketChannel>() {//创建一个通道测试对象(匿名)
+//                        @Override
+//                        protected void initChannel(SocketChannel ch) throws Exception {
+//                            ch.pipeline().addLast(new NettyServerHandler());
+//                        }
+//                    });
             System.out.println("服务器已经装逼好了......");
             //绑定一个端口并同步处理
             //启动服务器(并绑定端口)
