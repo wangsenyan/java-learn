@@ -1,7 +1,4 @@
 package com.wsy.netty.nio.zerocopy;
-
-import com.sun.tools.jconsole.JConsoleContext;
-
 import java.io.FileInputStream;
 import java.net.InetSocketAddress;
 import java.nio.channels.FileChannel;

@@ -5,7 +5,6 @@ import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
-import io.netty.channel.ChannelPipeline;
 import io.netty.util.CharsetUtil;
 import java.util.concurrent.TimeUnit;
 
@@ -14,13 +13,11 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         System.out.println("服务器:" + Thread.currentThread().getName());
         System.out.println("server ctx=" + ctx);
-        Channel channel = ctx.channel();
-        ChannelPipeline pipeline = ctx.pipeline();
+
 
         ByteBuf buf = (ByteBuf) msg;
         System.out.println("客户端消息:" + buf.toString(CharsetUtil.UTF_8));
         System.out.println("客户端地址:" + ctx.channel().remoteAddress());
-
         //将任务加到taskQueue,否则会阻塞channelReadComplete
         //方案一:程序自定义普通任务
         //      同一个线程,第二还需再等待20s

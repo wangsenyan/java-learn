@@ -22,6 +22,7 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
  * pipeline 双向链表
  * ctx 双向链表
  * NioEventLoop串行化 处理:消息读取->解码->处理->编码->发送
+ * NioEventLoop next会将nioEventLoopGroup中的nioEventLoop轮流执行
  */
 public class NettyServer {
     public static void main(String[] args) throws InterruptedException {
@@ -58,7 +59,7 @@ public class NettyServer {
             //对关闭通道进行监听
             cf.channel().closeFuture().sync();
         }finally {
-            bossGroup.shutdownGracefully();
+            bossGroup.shutdownGracefully();//断开连接关闭线程
             workGroup.shutdownGracefully();
         }
     }

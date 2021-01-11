@@ -20,6 +20,14 @@ import java.net.URI;
  * 4. 过滤资源
  * 5. pipeline/handler 每个浏览器不一样?线程不一样就不一样吧
  *    短连接,断开重连线程不一样,导致pipeline/handler也不一样
+ * 6. ChannelPipeline
+ *  - close 关闭通道
+ *  - flush 刷新
+ *  - writeAndFlush(Object msg) 将数据写到ChannelPipeline中当前
+ *    ChannelHandler的下一个ChanneHandler开始处理
+ * 7. ChannelOption
+ *  - ChannelOption.SO_BLOCK 阻塞队列的大小
+ *  - ChannelOption.SO_KEEPALIVE 保持连接活动状态
  */
 public class HttpServerHandler extends SimpleChannelInboundHandler<HttpObject> {
     //读取客户端数据
@@ -28,7 +36,10 @@ public class HttpServerHandler extends SimpleChannelInboundHandler<HttpObject> {
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, HttpObject msg) throws Exception {
         //判断msg是不是httpRequest请求
-
+        System.out.println("channel=" + ctx.channel());
+        System.out.println("pipeline=" + ctx.pipeline());
+        System.out.println("channel=" + ctx.pipeline().channel());
+        System.out.println("handler=" + ctx.handler());
         if(msg instanceof HttpRequest){
             System.out.println("pipeline hashcode=" + ctx.pipeline().hashCode() + "this hashcode=" + this.hashCode());
             System.out.println("msg 类型=" + msg.getClass());
