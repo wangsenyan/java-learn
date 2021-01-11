@@ -44,13 +44,12 @@ public class NettyServer {
                             //可以用一个集合管理socketChannel,在推送消息时,可以将业务加入到各个channel
                             //对应的NiOEventLoop的taskQueue 或者 scheduleTaskQueue
                         }
+                    }).childHandler(new ChannelInitializer<SocketChannel>() {//创建一个通道测试对象(匿名)
+                        @Override
+                        protected void initChannel(SocketChannel ch) throws Exception {
+                            ch.pipeline().addLast(new NettyServerHandler());
+                        }
                     });
-//                    .childHandler(new ChannelInitializer<SocketChannel>() {//创建一个通道测试对象(匿名)
-//                        @Override
-//                        protected void initChannel(SocketChannel ch) throws Exception {
-//                            ch.pipeline().addLast(new NettyServerHandler());
-//                        }
-//                    });
             System.out.println("服务器已经装逼好了......");
             //绑定一个端口并同步处理
             //启动服务器(并绑定端口)

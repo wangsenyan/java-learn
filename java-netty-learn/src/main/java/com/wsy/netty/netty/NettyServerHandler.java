@@ -7,8 +7,6 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.channel.ChannelPipeline;
 import io.netty.util.CharsetUtil;
-
-import java.nio.charset.Charset;
 import java.util.concurrent.TimeUnit;
 
 public class NettyServerHandler extends ChannelInboundHandlerAdapter {

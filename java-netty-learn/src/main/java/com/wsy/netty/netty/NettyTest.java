@@ -1,5 +1,6 @@
 package com.wsy.netty.netty;
 
+import io.netty.channel.ChannelInboundHandlerAdapter;
 import org.springframework.boot.autoconfigure.web.ServerProperties;
 
 /**
@@ -27,6 +28,15 @@ import org.springframework.boot.autoconfigure.web.ServerProperties;
  *   3. 处理任务队列的任务 ， 即 runAllTasks
  * 8) 每个Worker NIOEventLoop  处理业务时，会使用pipeline(管道), pipeline 中包含了 channel ,
  *    即通过pipeline 可以获取到对应通道, 管道中维护了很多的 处理器
+ *
+ * 9) ChannelInboundHandlerAdapter
+ *   1.channelActive 通道就绪事件
+ *   2.channelInactive 通道非就绪事件
+ *   3.channelRead 通道读取数据时间
+ *   4.channelReadComplete 数据读取完毕事件
+ *   5.exceptionCaught 通道发生异常事件
+ *   6.channelRegistered 通道注册事件
+ *   7.channelUnregistered 通道取消注册事件
  */
 public class NettyTest {
 
