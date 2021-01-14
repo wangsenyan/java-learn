@@ -23,7 +23,7 @@ public class ChatServer {
             ServerBootstrap bootstrap = new ServerBootstrap();
             bootstrap.group(bossGroup,workGroup)
                     .channel(NioServerSocketChannel.class)
-//                    .childOption(ChannelOption.SO_BACKLOG,128)
+                    .childOption(ChannelOption.SO_BACKLOG,128)
                     .childHandler(new ChannelInitializer<SocketChannel>() {
                         @Override
                         protected void initChannel(SocketChannel ch) throws Exception {

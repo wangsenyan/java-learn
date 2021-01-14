@@ -1,6 +1,4 @@
 package com.wsy.netty.websocket;
-
-import com.wsy.netty.heartbeat.BeatServerHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -15,8 +13,6 @@ import io.netty.handler.codec.http.websocketx.WebSocketServerProtocolHandler;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
 import io.netty.handler.stream.ChunkedWriteHandler;
-import io.netty.handler.timeout.IdleStateHandler;
-import java.util.concurrent.TimeUnit;
 
 public class WebSocketServer {
     private String host;
@@ -48,6 +44,7 @@ public class WebSocketServer {
                             //2. 可以看到webSocketFrame下面有六个子类
                             //3. 浏览器请求ws://host:port/hello表示请求的path
                             //4. WebSocketServerProtocolHandler 核心功能是将http协议升级为websocket协议
+                            //5. 101协议转换 http->websocket 101 Switching Protocols
                             pipeline.addLast(new WebSocketServerProtocolHandler("/hello"));
                             pipeline.addLast(new WebSocketServerHandler());
                         }
@@ -62,6 +59,6 @@ public class WebSocketServer {
     }
 
     public static void main(String[] args) throws Exception {
-        new com.wsy.netty.heartbeat.BeatServer("127.0.0.1",8888).run();
+        new WebSocketServer("127.0.0.1",8888).run();
     }
 }
