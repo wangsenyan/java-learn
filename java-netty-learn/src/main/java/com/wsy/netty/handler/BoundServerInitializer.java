@@ -15,5 +15,7 @@ public class BoundServerInitializer extends ChannelInitializer<SocketChannel> {
         pipeline.addLast(new BoundServerDecoder2());
         pipeline.addLast(new BoundClientEncoder());
         pipeline.addLast(new BoundServerHandler());
+        System.out.println("good");
     }
 }
+

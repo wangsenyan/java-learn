@@ -4,6 +4,10 @@
 	<modelVersion>4.0.0</modelVersion>
 	<modules>
 		<module>java-cloud-learn</module>
+		<module>cloud-spring</module>
+		<module>java-algor-learn</module>
+		<module>java-basis-learn</module>
+		<module>java-netty-learn</module>
 	</modules>
 	<parent>
 		<groupId>org.springframework.boot</groupId>
