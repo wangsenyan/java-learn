@@ -1,23 +1,29 @@
 package com.wsy.basis.interview;
 
-import jdk.nashorn.internal.objects.annotations.Constructor;
-import lombok.Getter;
-import lombok.Setter;
-
-@Setter
-@Getter
-class Person{
+//import lombok.Getter;
+//import lombok.Setter;
+//
+//@Setter
+//@Getter
+public class Person{
     private String name;
     public Person(String name) {
         this.name = name;
     }
+    public String getName() {
+        return name;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
 }
+
 public class TestTransferValue {
     public void changeValue1(int age){
         age = 30;
     }
     public void changeValue2(Person person){
-        person.setName("xxx");
+        person.setName("xxxx");
     }
     public void changeValue3(String str){
        // str="xxx";
