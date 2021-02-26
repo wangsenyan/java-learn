@@ -1,6 +1,7 @@
 package com.wsy.algorithm.niuke;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class ConcatTwoArrays {
     public int[] concatTwoArrays(int[]arr1,int[]arr2){

@@ -57,15 +57,18 @@ public class ThreadTest01 {
 //        },executor);
 
 //        CompletableFuture f =  f1.thenCombineAsync(f2,(a,b)->{
+//            //f1,f2的结果都能获取
 //            return a + ": " + b + "haha";
 //        },executor);
 //        System.out.println(f.get());
 //
 //        f1.runAfterEitherAsync(f2,()->{
+//            //f1,f2只有其中完成一个,不接收结果
 //            System.out.println("f结束");
 //        },executor);
 //        f1.acceptEitherAsync(f2,(r)->{
-//            System.out.println("f结束"+ r);
+//           //f1,f2只要其中完成一个,接收结果
+//           System.out.println("f结束"+ r);
 //        },executor);
 //        f1.applyToEitherAsync(f2,r->{
 //            System.out.println("任务三开始");
