@@ -7,6 +7,12 @@
 		<artifactId>java-learn</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
+	<repositories>
+		<repository>
+			<id>mylib</id>
+			<url>file://${project.basedir}/lib</url>
+		</repository>
+	</repositories>
 	<groupId>com.wsy</groupId>
 	<artifactId>java-basis-learn</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
@@ -18,6 +24,13 @@
 	</properties>
 
 	<dependencies>
+		<dependency>
+			<groupId>com.bigdata.gulimall</groupId>
+			<artifactId>gulimall-order</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/lib/gulimall-order-0.0.1-SNAPSHOT.jar</systemPath>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
