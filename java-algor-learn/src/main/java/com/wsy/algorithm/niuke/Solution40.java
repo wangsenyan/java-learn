@@ -1,7 +1,6 @@
 package com.wsy.algorithm.niuke;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -55,7 +54,7 @@ class Solution40 {
     }
 
     public static void main(String[] args) {
-        String s = "bcabbcaabbccacacbabccacaababcbb";
+        String s = "bcabbcaabbccacacbabccacaababcbbcdefghijklmnopqrrstuvwxyz";
         String[] words={"c","b","a","c","a","a","a","b","c"};
         List<Integer> substring = new Solution40().findSubstring(s, words);
 
