@@ -1,7 +1,6 @@
 package com.wsy.algorithm.niuke;
 
-import java.util.Arrays;
-import java.util.HashSet;
+import java.util.*;
 
 public class Solution66 {
     public double[] medianSlidingWindow(int[] nums, int k) {
