@@ -11,7 +11,9 @@ public class NettyClientHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         System.out.println("client " + ctx);
-        ctx.writeAndFlush(Unpooled.copiedBuffer("hi.服务器", CharsetUtil.UTF_8));
+        for (int i = 0; i < 10; i++) {
+            ctx.writeAndFlush(Unpooled.copiedBuffer("hi.服务器" + i, CharsetUtil.UTF_8));
+        }
     }
 
     //当通道有读取事件时,触发
