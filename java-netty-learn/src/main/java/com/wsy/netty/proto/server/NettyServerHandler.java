@@ -6,8 +6,6 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.util.CharsetUtil;
 
-import java.nio.charset.Charset;
-
 public class NettyServerHandler extends SimpleChannelInboundHandler<MsgProto> {
 
     @Override
@@ -15,9 +13,7 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<MsgProto> {
         //接收到数据并处理
         int len = msg.getLen();
         byte[] content = msg.getContent();
-        System.out.println("服务端接收到信息如下");
-        System.out.println("长度=" + len);
-        System.out.println("内存=" + new String(content, Charset.forName("utf-8")));
+        ctx.writeAndFlush(msg);
     }
 
     @Override

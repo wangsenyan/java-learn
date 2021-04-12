@@ -20,6 +20,10 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
  * ctx 双向链表
  * NioEventLoop串行化 处理:消息读取->解码->处理->编码->发送
  * NioEventLoop next会将nioEventLoopGroup中的nioEventLoop轮流执行
+ *
+ * 自定义协议
+ *  - 编写自己的编码，解码器
+ *  - 加入处理器
  */
 public class NettyServer {
     public static void main(String[] args) throws InterruptedException {
@@ -27,7 +31,7 @@ public class NettyServer {
         //  默认实际是CPU核数 * 2,可以自己指定
         //  workgroup线程满后会重用某一个
         EventLoopGroup bossGroup = new NioEventLoopGroup(1);
-        EventLoopGroup workGroup = new NioEventLoopGroup();
+        EventLoopGroup workGroup = new NioEventLoopGroup(1);
         try {
             //创建服务端的启动配置,配置参数
             ServerBootstrap bootstrap = new ServerBootstrap();
@@ -39,6 +43,7 @@ public class NettyServer {
                         @Override
                         protected void initChannel(SocketChannel ch) throws Exception {
                             ChannelPipeline pipeline = ch.pipeline();
+                            pipeline.addLast(new MsgProtoEncoder());
                             pipeline.addLast(new MsgProtoDecoder());
                             pipeline.addLast(new NettyServerHandler());
                         }

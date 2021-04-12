@@ -4,6 +4,7 @@ import com.wsy.netty.proto.MsgProto;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
 public class NettyClientHandler extends SimpleChannelInboundHandler<MsgProto> {
@@ -30,6 +31,8 @@ public class NettyClientHandler extends SimpleChannelInboundHandler<MsgProto> {
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, MsgProto msg) throws Exception {
-
+        int len = msg.getLen();
+        byte[] content = msg.getContent();
+        System.out.println(new String(content, Charset.forName("utf-8")));
     }
 }

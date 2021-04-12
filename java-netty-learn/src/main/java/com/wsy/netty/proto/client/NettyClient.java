@@ -27,8 +27,8 @@ public class NettyClient {
                         protected void initChannel(SocketChannel ch) throws Exception {
                             ChannelPipeline pipeline = ch.pipeline();
                             pipeline.addLast(new MsgProtoEncoder());
+                            pipeline.addLast(new MsgProtoDecoder());
                             pipeline.addLast(new NettyClientHandler());
-//                            ch.pipeline().addLast(new NettyClientHandler());
                         }
                     })
             ;
