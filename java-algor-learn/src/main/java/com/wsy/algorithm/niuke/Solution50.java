@@ -6,8 +6,8 @@ public class Solution50 {
     public double findMedianSortedArrays(int[] nums1, int[] nums2) {
         this.nums1 = nums1;
         this.nums2 = nums2;
-        int len1 = nums1.length;
         int len2 = nums2.length;
+        int len1 = nums1.length;
         return (findKthSortedArrays(0,0,(len1 + len2 + 1)/2) + findKthSortedArrays(0,0,(len1 + len2 + 2)/2))/2.0;//一定要除以2.0
     }
     private int findKthSortedArrays(int n1,int n2,int k){
