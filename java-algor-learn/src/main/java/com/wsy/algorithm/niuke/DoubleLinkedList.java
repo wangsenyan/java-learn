@@ -1,21 +1,25 @@
 package com.wsy.algorithm.niuke;
 
-public class DoubleLinkedList<E> {
-    private Node head;
-    private Node tail;
-    private int size;//链表长度
+public class DoubleLinkedList<K,V> {
     public class Node{
         private Node pre;
         private Node next;
-        private E value;
-        public Node(Node pre, Node next, E value) {
+        private K key;
+        private V value;
+        public Node(Node pre, Node next, K key, V value) {
             this.pre = pre;
             this.next = next;
+            this.key = key;
             this.value = value;
+
         }
     }
-    public Node addFirst(E e){
-        Node node = new Node(null, head, e);
+    private Node head;
+    private Node tail;
+    private int size;//链表长度
+    public Node addFirst(K k, V v){
+
+        Node node = new Node(null, head, k,v);
         if(head==null){//空链
             head = node;
             tail = node;
@@ -26,8 +30,8 @@ public class DoubleLinkedList<E> {
         size++;
         return node;
     }
-    public Node addLast(E e){
-        Node node = new Node(tail, null, e);
+    public Node addLast(K k, V v){
+        Node node = new Node(tail, null, k,v);
         if(tail == null){
             tail = node;
             head = node;
@@ -39,11 +43,11 @@ public class DoubleLinkedList<E> {
         return node;
     }
 
-    public Node remove(E e){
+    public Node remove(K k){
         if(size<=0) return null;
         Node cur = head;
         while (cur!=null){
-            if(cur.value.equals(e)){
+            if(cur.key.equals(k)){
                 unlink(cur);
                 size--;
                 return cur;
@@ -60,27 +64,17 @@ public class DoubleLinkedList<E> {
             pre.next = next;
             node.next = null;
         }else{
-            if(head==node)//避免node非链表中节点
-               head = next;
+            head = next;
         }
         if(next!=null){
             next.pre = pre;
             node.pre = null;
         }else{
-            if(tail==node)
-               tail = pre;
+            tail = pre;
         }
         size--;
     }
     public int size(){
         return size;
-    }
-    public static void main(String[] args) {
-        DoubleLinkedList<Integer> dbList = new DoubleLinkedList<>();
-        dbList.addFirst(1);
-        DoubleLinkedList.Node node = (DoubleLinkedList.Node) dbList.addFirst(2);
-        DoubleLinkedList.Node node1 = (DoubleLinkedList.Node) dbList.addFirst(3);
-        dbList.unlink(node);
-        dbList.unlink(node1);
     }
 }

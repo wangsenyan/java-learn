@@ -31,7 +31,7 @@ public class NettyServer {
         //  默认实际是CPU核数 * 2,可以自己指定
         //  workgroup线程满后会重用某一个
         EventLoopGroup bossGroup = new NioEventLoopGroup(1);
-        EventLoopGroup workGroup = new NioEventLoopGroup(1);
+        EventLoopGroup workGroup = new NioEventLoopGroup();
         try {
             //创建服务端的启动配置,配置参数
             ServerBootstrap bootstrap = new ServerBootstrap();
