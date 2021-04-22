@@ -23,7 +23,7 @@ public class NettyClient {
                     });
             System.out.println("客户端准备好了");
             //启用客户端去连接服务端
-            ChannelFuture channelFuture = bootstrap.connect("127.0.0.1", 8888);
+            ChannelFuture channelFuture = bootstrap.connect("127.0.0.1", 6000);
             channelFuture.channel().closeFuture().sync();
         } catch (InterruptedException e) {
             e.printStackTrace();

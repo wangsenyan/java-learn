@@ -6,7 +6,7 @@
     <modules>
         <module>cloud-mbg</module>
     </modules>
-    <parent>
+<parent>
     <groupId>com.wsy</groupId>
     <artifactId>java-learn</artifactId>
     <version>0.0.1-SNAPSHOT</version>

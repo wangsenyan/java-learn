@@ -25,7 +25,6 @@ public class BIOServer {
                 System.out.println("接收到"+socket.getRemoteSocketAddress() + " "+ total + "字节");
             }catch (IOException e){
                 socket.close();
-                //e.printStackTrace();
             }
         }
     }

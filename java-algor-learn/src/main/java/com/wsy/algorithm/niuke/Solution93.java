@@ -1,42 +1,38 @@
 package com.wsy.algorithm.niuke;
-
-import java.util.Arrays;
-
 class Solution93 {
-    public int purchasePlans(int[] nums, int target) {
-        Arrays.sort(nums);
-        int n = nums.length;
-        int sum = 0;
-        int left = 0;
-        int right = n -1;
-        while(left<right){
-            if(nums[left]+nums[right]<=target) {
-                sum += right - left;
-                ++left;
-            }else{
-                --right;
-            }
+    public int orchestraLayout(int num, int xPos, int yPos) {
+        long t = 0;
+        //找到第几圈
+        int x = Math.min(xPos +1,num - xPos);//2
+        int y = Math.min(yPos +1,num - yPos);//2
+        int c = Math.min(x,y);//第几圈 2 -1
+        for (int i = 1; i < c; i++) {
+            //第一圈 num - 1 - (i-1) * 2;
+            //第二圈 num - 2;
+            t+=(long) (num - 1 - (i - 1) * 2) * 4 ;
         }
-        return sum % 1000000007;
-    }
-    public int purchasePlans1(int[] nums, int target) {
-        int n = nums.length;
-        int sum = 0;
-        for (int i = 0; i < n; i++) {
-            for (int j = i+1; j < n; j++) {
-                if(nums[i] + nums[j] <=target)
-                   sum++;
-            }
+        System.out.println(t);
+        int l = c -1;
+        int r = num - c;
+        int u = c -1;
+        int d = num - c;
+        //根据xPos,yPos来获取在第几象相
+        if(xPos==u && yPos< r){
+            t+=yPos - l + 1;
+        }else if(yPos==r && xPos<d){
+            t+= r - l;
+            t+=xPos-u + 1;
+        }else if(xPos==d && yPos>l){
+            t+=(r-l) * 2;
+            t+= r - yPos + 1;
+        }else{
+            t+=(r-l) * 3;
+            t+= d - xPos + 1;
         }
-        return sum % 1000000007;
+        return (int) (t-1) % 9 +1;
     }
 
     public static void main(String[] args) {
-        int[] nums = {2,5,3,5,5,6,7,7,1};
-        int target =14 ;
-        Solution93 solution93 = new Solution93();
-        int i = solution93.purchasePlans(nums, target);
-        int i1 = solution93.purchasePlans1(nums, target);
-        System.out.println(i1);
+        System.out.println(new Solution93().orchestraLayout(10, 5, 3));
     }
 }

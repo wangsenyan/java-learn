@@ -1,49 +1,40 @@
 package com.wsy.algorithm.niuke;
 
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.function.BiFunction;
 
 public class Solution47 {
     public String minWindow(String s, String t) {
-        //队列仅仅保存在t中的字符及位置
+        //比特位
         int sl = s.length();
         int tl = t.length();
-        int[] patten = new int[128];
-        int[] window = new int[128];
-        String res = "";
-        int min = Integer.MIN_VALUE;
-        for (int i = 0; i < tl; i++) {
-            patten[t.charAt(i)]++;
+        HashMap<Character,Integer> hash = new HashMap<>(); //保存最新的字符出现的位置
+        long sub = 0;
+        for(int i=0;i<tl;i++){
+            sub |= 1<<(t.charAt(i)-'a');//sub记录t的比特位特征
         }
-        int left=0,right=0,count=0;
-        while (right < sl){
-            char c = s.charAt(right);
-            window[c]++;
-            if(patten[c]>0 && window[c] <=patten[c]){
-                count++;
-            }
-            while (count == tl){
-                if(right - left + 1 < min){
-                    min = right - left + 1;
-                    res = s.substring(left,right+1);
+        int[] range = new int[]{-1,-1};
+        long str = 0 ;
+        int j = 0, min =Integer.MAX_VALUE;//j保存包含t出现的第一个字符
+        for(int i=0;i<sl;i++){
+            char c = s.charAt(i);
+            str |= 1<< (c-'a');//对s求特征
+            if((sub & 1 << (c - 'a'))>0){//如果这个位置在sub中,记录到hash表中,第一个位置如果重复出现呢?
+                if(range[0]==-1) {
+                    range[0] = i;//range[0]记录范围第一次出现的位置
+                    j = i;
                 }
-                char c1 = s.charAt(left);
-                if(window[c1]>0 && window[c1]<=patten[c1]){
-                    count--;//保证能跳出去
-                }
-                window[c1]--;
-                left++;
+                hash.put(c,i);//出现,就加入hash列表,char,index
             }
-            right++;
+            if((str&sub)==sub){//如果当前范围已经包含,更新range
+                int l = i - range[0];//范围的大小
+                if(min<l) {
+                    range[1]=i;
+                }
+                //range[1]=i;
+                str^=(s.charAt(j));//str删除最近出现的字符
+                j = hash.get(s.charAt(j))+1;
+            }
         }
-        return res;
-    }
-    public static void main(String[] args) {
-        String s ="ADOBBBECODEBAVNCC"
-                ,t ="ABC";
-        String s1 = new Solution47().minWindow(s, t);
-        System.out.println(s1);
+        return s.substring(range[0],range[1]);
     }
 }

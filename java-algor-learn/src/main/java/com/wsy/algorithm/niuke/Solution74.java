@@ -3,38 +3,23 @@ import com.wsy.algorithm.niuke.BinaryTree.TreeNode;
 public class Solution74 {
     private int max;
     public int maxPathSum(TreeNode root) {
-        max = Integer.MIN_VALUE/2;
-        helper(root);
+        //ret --> [root.val,left.val + root.val,right.val + root.val]
+        //max --> [max,left_ret,right_ret,left_ret + root.val,right_ret + root.val,left_ret + root.val + right_ret]
+        max = Integer.MIN_VALUE;
+        maxPathSumHelper(root);
         return max;
     }
-    private int helper(TreeNode root){
-        int left = -1001;
-        int right = -1001;
-        if(root.left!=null)
-            left = helper(root.left);
-        if(root.right!=null)
-            right = helper(root.right);
-        System.out.println(left + " " + right + " "+ root.val);
-        max = Math.max( Math.max(root.val,left + right + root.val),max);
-
-        if(left > right){
-            max = Math.max(max,Math.max(left,left+root.val));
-            if(root.val + left > root.val )
-                return left + root.val;
-            else
-                return root.val;
-        }else{
-            max = Math.max(Math.max(right,right + root.val),max);
-            if(root.val + right > root.val)
-                return right + root.val;
-            else
-                return root.val;
-        }
+    private int maxPathSumHelper(TreeNode root){
+       if(root==null) return 0;
+       int left = Math.max(maxPathSumHelper(root.left),0);//子树为负,抛弃
+       int right = Math.max(maxPathSumHelper(root.right),0);
+       max = Math.max(max,left + right + root.val);
+       return Math.max(left,right) + root.val;
     }
 
     public static void main(String[] args) {
-        Integer[] list = new Integer[]{1,-2,-3,1,3,-2,null,-1};
-        TreeNode build = new BinaryTree().build(list);
+        Integer[] nums = new Integer[]{1,2,3};
+        TreeNode build = new BinaryTree().build(nums);
         int i = new Solution74().maxPathSum(build);
     }
 }
