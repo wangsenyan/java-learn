@@ -12,4 +12,16 @@ package com.wsy.basis.base;
  *    - 子类访问权限大于等于父类方法访问权限
  */
 public class Reload {
+    public void test(){
+        int a  = 10,b = 10;
+        System.out.println("ret=" + a + b);
+        //System.out.println("ret=" + a - b);
+        System.out.println("ret=" + a * b);
+        System.out.println("ret=" + a / b);
+    }
+
+    public static void main(String[] args) {
+        Reload reload = new Reload();
+        reload.test();
+    }
 }
