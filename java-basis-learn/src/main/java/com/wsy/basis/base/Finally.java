@@ -41,6 +41,7 @@ public class Finally {
             e.printStackTrace();
         }
     }
+
     public static void main(String[] args) {
         Finally f = new Finally();
         System.out.println(f.f(2));

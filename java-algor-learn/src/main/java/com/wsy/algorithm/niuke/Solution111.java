@@ -10,7 +10,7 @@ public class Solution111 {
            if(u>1) a+= u * l  + i;
            num/=10;
            l = l * 10 + i;
-           i*=10;
+           i *= 10;
         }
         return a;
     }
