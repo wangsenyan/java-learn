@@ -10,7 +10,7 @@ class TrieNode {
     public TrieNode() {}
 }
 
-class Solution120 {
+public class Solution120 {
     char[][] _board = null;
     ArrayList<String> _result = new ArrayList<String>();
 
