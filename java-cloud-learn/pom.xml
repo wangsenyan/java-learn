@@ -5,6 +5,7 @@
 <packaging>pom</packaging>
     <modules>
         <module>cloud-mbg</module>
+        <module>cloud-jdbc</module>
     </modules>
 <parent>
     <groupId>com.wsy</groupId>
