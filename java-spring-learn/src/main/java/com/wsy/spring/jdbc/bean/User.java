@@ -1,4 +1,4 @@
-package com.wsy.spring.jdbc.statement;
+package com.wsy.spring.jdbc.bean;
 
 import lombok.Data;
 

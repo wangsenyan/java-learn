@@ -1,8 +1,12 @@
 package com.wsy.spring.jdbc.statement;
 
+import com.wsy.spring.jdbc.bean.User;
+import com.wsy.spring.jdbc.util.JDBCUtils;
+
 import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.sql.*;
+import java.util.List;
 import java.util.Properties;
 import java.util.Scanner;
 
@@ -10,21 +14,31 @@ import java.util.Scanner;
  * Statement: 执行静态SQL语句并返回它所生成结果的对象
  *
  * PreparedStatement: SQL语句被预编译并存储在此对象中,可以使用此对象多次高效地执行该语句
- *
+ * 1. sql注入
+ * 2. blob数据
+ * 3. 更高效批量插入
  * CallableStatement: 执行SQL存储过程
  */
 public class _Statement {
     public void testLogin(){
         Scanner scanner = new Scanner(System.in);
         System.out.println("请输入用户名: ");
-        String username = scanner.next();
+        String username = scanner.nextLine();
         System.out.println("请输入密码: ");
-        String password = scanner.next();
+        String password = scanner.nextLine();
         String sql = "select username,password from ums_admin where username = '"+username+"' and password = '"+password+"'";
-        User user = get(sql, User.class);
-        if(user!=null){
+        String sql1 = "select username,password from ums_admin where username = ? and password = ? ";
+        System.out.println(sql1);
+        List<User> r = JDBCUtils.select(User.class, sql1, username, password);
+        //User user = get(sql, User.class);
+//        if(user!=null){
+//            System.out.println("登录成功");
+//        }else{
+//            System.out.println("登录失败");
+//        }
+        if(r.size()>0){
             System.out.println("登录成功");
-        }else{
+        }else {
             System.out.println("登录失败");
         }
     }

@@ -12,6 +12,7 @@ import java.util.Properties;
  */
 public class Connection5 {
     public void testConnection5() throws Exception {
+        //ClassLoader.getSystemClassLoader().getResourceAsStream("mysql.properties");
         InputStream is = Connection5.class.getClassLoader().getResourceAsStream("mysql.properties");
         Properties properties = new Properties();
         properties.load(is);
@@ -24,7 +25,19 @@ public class Connection5 {
         Connection connection = DriverManager.getConnection(url, user, password);
         System.out.println(connection);
     }
+    public Connection getConnection() throws Exception {
+        InputStream is = Connection5.class.getClassLoader().getResourceAsStream("mysql.properties");
+        Properties properties = new Properties();
+        properties.load(is);
+        String user = properties.getProperty("jdbc.mysql.user");
+        String password = properties.getProperty("jdbc.mysql.password");
+        String url = properties.getProperty("jdbc.mysql.url");
+        String driverClass = properties.getProperty("jdbc.mysql.driverClass");
 
+        Class.forName(driverClass);
+        Connection connection = DriverManager.getConnection(url, user, password);
+        return connection;
+    }
     public static void main(String[] args) throws Exception {
         new Connection5().testConnection5();
     }
