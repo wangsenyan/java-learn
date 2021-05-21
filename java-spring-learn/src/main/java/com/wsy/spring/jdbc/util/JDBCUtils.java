@@ -1,5 +1,10 @@
 package com.wsy.spring.jdbc.util;
 
+import com.alibaba.druid.pool.DruidDataSourceFactory;
+import com.mchange.v2.c3p0.ComboPooledDataSource;
+import org.apache.commons.dbcp.BasicDataSourceFactory;
+
+import javax.sql.DataSource;
 import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.sql.*;
@@ -11,6 +16,31 @@ import java.util.Properties;
  *@Description 操作数据库的工具类
  */
 public class JDBCUtils {
+    private static ComboPooledDataSource cpds = new ComboPooledDataSource("helloc3p0");
+    private static DataSource dataSource;
+    private static DataSource dataSource1;
+    static {
+        try {
+            Properties pros = new Properties();
+            //1.使用类加载器
+            InputStream is = ClassLoader.getSystemClassLoader().getResourceAsStream("druid.properties");
+            pros.load(is);
+            dataSource1 = DruidDataSourceFactory.createDataSource(pros);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    static {
+        try {
+            Properties pros = new Properties();
+            //1.使用类加载器
+            InputStream is = ClassLoader.getSystemClassLoader().getResourceAsStream("dbcp.properties");
+            pros.load(is);
+            dataSource = BasicDataSourceFactory.createDataSource(pros);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     public static Connection getConnection() throws Exception {
         InputStream is = ClassLoader.getSystemClassLoader().getResourceAsStream("mysql.properties");
         Properties properties = new Properties();
@@ -24,7 +54,18 @@ public class JDBCUtils {
         Connection connection = DriverManager.getConnection(url, user, password);
         return connection;
     }
-
+    public static Connection getPoolConnection() throws Exception {
+        Connection conn = cpds.getConnection();
+        return conn;
+    }
+    public static Connection getDPCPConnection() throws Exception {
+        Connection conn = dataSource.getConnection();
+        return conn;
+    }
+    public static Connection getDruidConnection() throws Exception {
+        Connection conn = dataSource1.getConnection();
+        return conn;
+    }
     /**
      * 关闭资源的操作
      * @param conn

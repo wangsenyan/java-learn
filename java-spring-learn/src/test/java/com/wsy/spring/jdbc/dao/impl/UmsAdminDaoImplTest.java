@@ -29,14 +29,14 @@ class UmsAdminDaoImplTest {
     }
     @Test
     void create() throws Exception {
-        Connection conn = JDBCUtils.getConnection();
+        Connection conn = JDBCUtils.getDruidConnection();
         dao.create(conn,umsAdmin);
     }
 
     @Test
     void destroyById() throws Exception {
-        Connection conn = JDBCUtils.getConnection();
-        dao.destroyById(conn,24620);
+        Connection conn = JDBCUtils.getPoolConnection();
+        dao.destroyById(conn,24622);
     }
 
     @Test
