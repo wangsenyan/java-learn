@@ -21,7 +21,8 @@ public class Connection1 {
         this.info = info;
     }
     public  void testConnection1() throws SQLException {
-        Driver driver = new com.mysql.jdbc.Driver();
+        //Driver driver = new com.mysql.jdbc.Driver();
+        Driver driver = null;
         Connection connect = driver.connect(url, info);
         System.out.println(connect);
     }

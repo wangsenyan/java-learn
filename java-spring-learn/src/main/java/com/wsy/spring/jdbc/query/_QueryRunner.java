@@ -2,6 +2,7 @@ package com.wsy.spring.jdbc.query;
 
 import com.wsy.spring.jdbc.bean.UmsAdmin;
 import com.wsy.spring.jdbc.util.JDBCUtils;
+import org.apache.commons.dbutils.DbUtils;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.ResultSetHandler;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
@@ -63,6 +64,7 @@ public class _QueryRunner {
         } catch (Exception e) {
             e.printStackTrace();
         }finally {
+            DbUtils.closeQuietly(conn);
             JDBCUtils.closeResource(conn,null);
         }
     }
