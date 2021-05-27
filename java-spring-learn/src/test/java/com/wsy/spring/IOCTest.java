@@ -1,9 +1,6 @@
 package com.wsy.spring;
 
-import com.wsy.spring.bean.Book;
-import com.wsy.spring.bean.Father;
-import com.wsy.spring.bean.Person;
-import com.wsy.spring.bean.User;
+import com.wsy.spring.bean.*;
 import com.wsy.spring.config.PersonConfig;
 import com.wsy.spring.config.PersonConfig1;
 import com.wsy.spring.ioc.Employee;
@@ -102,5 +99,12 @@ public class IOCTest {
         ApplicationContext context = new ClassPathXmlApplicationContext("spring5/fbean1.xml");
         User service = context.getBean("factoryUser", User.class);
         System.out.println(service.toString());
+    }
+    @Test
+    public void test12(){
+        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("spring5/bean6.xml");
+        Order service = context.getBean("order", Order.class);
+        System.out.println(service.toString());
+        context.close();
     }
 }
