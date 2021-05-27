@@ -7,7 +7,6 @@ public class Solution150 {
     public int numSteps1(String s) {
 
         //特例,1111,为 10000/2
-
         char[] cs = s.toCharArray();
         List<Character> css = new ArrayList<>();
 
