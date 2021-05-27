@@ -5,4 +5,6 @@
     <bean id = "order" class="com.wsy.spring.bean.Order" init-method="initMethod" destroy-method="destroyMethod">
         <property name="name" value="订单"></property>
     </bean>
+    <!--  为当前配置文件所有bean添加后置处理器  -->
+    <bean id="orderPost" class="com.wsy.spring.bean.OrderPost"></bean>
 </beans>
