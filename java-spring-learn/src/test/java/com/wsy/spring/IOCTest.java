@@ -1,8 +1,11 @@
 package com.wsy.spring;
 
+import com.alibaba.druid.pool.DruidDataSource;
+import com.wsy.spring.autowire.Emp;
 import com.wsy.spring.bean.*;
 import com.wsy.spring.config.PersonConfig;
 import com.wsy.spring.config.PersonConfig1;
+import com.wsy.spring.controller.PersonController;
 import com.wsy.spring.ioc.Employee;
 import com.wsy.spring.ioc.Student;
 import com.wsy.spring.ioc.UserService;
@@ -105,6 +108,28 @@ public class IOCTest {
         ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("spring5/bean6.xml");
         Order service = context.getBean("order", Order.class);
         System.out.println(service.toString());
+        context.close();
+    }
+
+    @Test
+    public void test13(){
+        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("spring5/bean7.xml");
+        Emp emp = context.getBean("emp", Emp.class);
+        System.out.println(emp.toString());
+        context.close();
+    }
+    @Test
+    public void test14(){
+        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("spring5/bean8.xml");
+        DruidDataSource emp = context.getBean("dataSource", DruidDataSource.class);
+        System.out.println(emp.toString());
+        context.close();
+    }
+    @Test
+    public void test15(){
+        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("spring5/bean9.xml");
+        PersonController emp = context.getBean("personController", PersonController.class);
+        emp.test();
         context.close();
     }
 }
