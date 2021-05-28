@@ -5,6 +5,7 @@ import com.wsy.spring.autowire.Emp;
 import com.wsy.spring.bean.*;
 import com.wsy.spring.config.PersonConfig;
 import com.wsy.spring.config.PersonConfig1;
+import com.wsy.spring.config.SpringConfig;
 import com.wsy.spring.controller.PersonController;
 import com.wsy.spring.ioc.Employee;
 import com.wsy.spring.ioc.Student;
@@ -131,5 +132,11 @@ public class IOCTest {
         PersonController emp = context.getBean("personController", PersonController.class);
         emp.test();
         context.close();
+    }
+    @Test
+    public void test16(){
+        ApplicationContext context = new AnnotationConfigApplicationContext(SpringConfig.class);
+        PersonController emp = context.getBean("personController", PersonController.class);
+        emp.test();
     }
 }
