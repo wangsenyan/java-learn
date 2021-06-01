@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx" xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context  http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/tx  http://www.springframework.org/schema/tx/spring-tx.xsd http://www.springframework.org/schema/aop https://www.springframework.org/schema/aop/spring-aop.xsd">
+    <context:component-scan base-package="com.wsy.spring.jdbc"/>
+    <!--system-properties-mode="FALLBACK" 避免${username}使用系统值 -->
+    <context:property-placeholder location="classpath:druid.properties" system-properties-mode="FALLBACK"/>
+    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" destroy-method="close">
+        <property name="url" value="${url}"/>
+        <property name="driverClassName" value="${driverClassName}"/>
+        <property name="username" value="${username}"/>
+        <property name="password" value="${password}"/>
+    </bean>
+    <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+        <!--注入datasource-->
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+    <!--创建事务管理器-->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <!--注入数据源-->
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+    <!--开启事务注解-->
+    <tx:annotation-driven transaction-manager="transactionManager"/>
+    <!--配置通知-->
+    <tx:advice id="txadvice">
+        <!--配置事务参数-->
+        <tx:attributes>
+            <!--哪种规则的方法上面添加事务-->
+            <tx:method name="transfer" isolation="REPEATABLE_READ"/>
+        </tx:attributes>
+    </tx:advice>
+    <aop:config>
+        <!--配置切入点-->
+        <aop:pointcut id="pt" expression="execution(* com.wsy.spring.jdbc.service.*.*(..))"/>
+        <aop:advisor advice-ref="txadvice" pointcut-ref="pt"/>
+    </aop:config>
+</beans>

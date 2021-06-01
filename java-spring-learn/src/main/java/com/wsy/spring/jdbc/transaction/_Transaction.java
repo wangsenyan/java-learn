@@ -12,6 +12,33 @@ import java.sql.*;
  * DML默认情况下,一旦提交,就会自动提交
  *   >set autocommit=false取消
  * 默认在关闭连接时,自动提交数据
+ *
+ * 1. 事务添加到javaEE三层结构里面的Service层
+ * 2. Spring事务管理操作
+ *   - 两种方式,声明式,编程式
+ * 3. 声明式事务管理,底层使用aop
+ *   - 基于注解方式
+ *   - 基于xml配置文件方式
+ * 4. Spring事务管理API
+ *   - 提供一个接口,代表事务管理器,这个接口针对不同的框架提供不同的实现
+ *     - 在配置文件中配置事务管理器
+ *     - 开启事务注解
+ *      (1)。 引入名称空间 tx
+ *      (2)。 开启事务注解
+ *     - 在Service类上面（或Service类里面方法上面）添加事务注解@Transactional
+ *      (1) 类上面,所有方法都添加事务
+ *      (2) 方法上面,为方法添加事务
+ *     - @Transactional参数配置
+ *       value()
+ *       transactionManager()
+ *       propagation() default Propagation.REQUIRED; 传播行为
+ *       isolation() default Isolation.DEFAULT; 隔离级别
+ *       timeout() default -1; //规定时间内提交,否则回滚
+ *       readOnly() default false;// fasle可crud,true只能r
+ *       rollbackFor() default {}; 出现哪些错误,回滚 (rollbackFor = Exception.class)
+ *       rollbackForClassName() default {}
+ *       noRollbackFor() default {}; 不会滚
+ *       noRollbackForClassName() default {};
  */
 public class _Transaction {
     public int update(Connection conn,String sql,Object ...args){
