@@ -2,7 +2,6 @@ package com.wsy.circle;
 
 import com.wsy.circle.bean.A;
 import com.wsy.circle.bean.B;
-import org.springframework.beans.factory.support.DefaultSingletonBeanRegistry;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -33,6 +32,5 @@ public class CircleDemo {
         ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
         A a = context.getBean("a",A.class);
         B b = context.getBean("b",B.class);
-
     }
 }

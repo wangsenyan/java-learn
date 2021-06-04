@@ -1,4 +1,4 @@
-package com.wsy.spring.bean;
+package com.wsy.spring.webflux.bean;
 
 public class User {
     private String name;
