@@ -4,7 +4,7 @@ import java.util.*;
 
 class Solution815 {
     private Long M = 1000000L;
-    public int numBusesToDestination(int[][] routes, int source, int target) {
+    public int numBusesToDestination0(int[][] routes, int source, int target) {
         //构造图
         //<node,[next1,i]>
         if(source == target) return 0;
@@ -54,6 +54,54 @@ class Solution815 {
     }
     private Long hash(int u,int v,int i){
         return ((u * M) + v ) * M + i;
+    }
+    public int numBusesToDestination(int[][] routes, int source, int target) {
+        if (source == target) {
+            return 0;
+        }
+        //思路: 只要两条公交线有交汇点,那么换乘距离最多为2
+        int n = routes.length;
+        //edge记录两条公交线之间是否可换乘
+        //ret图的邻接链表
+        boolean[][] edge = new boolean[n][n];
+        Map<Integer, List<Integer>> rec = new HashMap<Integer, List<Integer>>();
+        for (int i = 0; i < n; i++) {
+            for (int site : routes[i]) {
+                List<Integer> list = rec.getOrDefault(site, new ArrayList<Integer>());
+                for (int j : list) {
+                    edge[i][j] = edge[j][i] = true;
+                }
+                list.add(i);
+                rec.put(site, list);
+            }
+        }
+        //从目的地到其他公交站的距离
+        int[] dis = new int[n];
+        Arrays.fill(dis, -1);
+        //有多个起点
+        Queue<Integer> que = new LinkedList<Integer>();
+        for (int bus : rec.getOrDefault(source, new ArrayList<Integer>())) {
+            dis[bus] = 1;
+            que.offer(bus);
+        }
+        while (!que.isEmpty()) {
+            int x = que.poll();
+            for (int y = 0; y < n; y++) {
+                //广度搜索,肯定为最近的
+                if (edge[x][y] && dis[y] == -1) {
+                    dis[y] = dis[x] + 1;
+                    que.offer(y);
+                }
+            }
+        }
+
+        int ret = Integer.MAX_VALUE;
+        for (int bus : rec.getOrDefault(target, new ArrayList<Integer>())) {
+            if (dis[bus] != -1) {
+                ret = Math.min(ret, dis[bus]);
+            }
+        }
+        return ret == Integer.MAX_VALUE ? -1 : ret;
     }
 
     public static void main(String[] args) {
